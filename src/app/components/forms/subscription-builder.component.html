@@ -1,0 +1,96 @@
+<section class="builder section" id="subscribe" aria-labelledby="builder-title">
+  <div class="container">
+    <header class="builder__head">
+      <p class="kicker">No. 03 — Your subscription</p>
+      <h2 class="display h-section" id="builder-title" tabindex="-1" kilnSplitWords kilnReveal="words">
+        Coffee that fits <em>how you drink it</em>.
+      </h2>
+      <p class="lead" kilnReveal revealDelay="0.15">
+        Four quick questions. We’ll size your bags so they’re finished while they’re still at their
+        best — and you can pause, skip or cancel whenever you like.
+      </p>
+    </header>
+
+    <div class="builder__body">
+      <form class="builder__form" (submit)="$event.preventDefault()" aria-describedby="builder-hint">
+        <p id="builder-hint" class="visually-hidden">
+          Your choices update the order summary immediately.
+        </p>
+
+        <!-- 1. Brew method -->
+        <fieldset class="q">
+          <legend class="q__legend"><span class="q__num mono">01</span>How do you brew?</legend>
+          <div class="choices choices--3">
+            <label *ngFor="let m of methods" class="choice">
+              <input type="radio" name="method" [value]="m.id" [checked]="store.method() === m.id"
+                (change)="setMethod(m.id)" />
+              <span class="choice__box">
+                <span class="choice__label">{{ m.label }}</span>
+                <span class="choice__hint mono">{{ m.hint }}</span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- 2. Cups per day -->
+        <fieldset class="q">
+          <legend class="q__legend"><span class="q__num mono">02</span>How much do you drink?</legend>
+          <div class="range">
+            <output class="range__value" for="cups">{{ cupsLabel(store.cupsPerDay()) }}</output>
+            <input id="cups" class="range__input" type="range" min="1" max="6" step="1"
+              [value]="store.cupsPerDay()" (input)="setCups($event)"
+              [attr.aria-valuetext]="cupsLabel(store.cupsPerDay())" aria-label="Cups per day"
+              [style.--fill]="((store.cupsPerDay() - 1) / 5) * 100 + '%'" />
+            <div class="range__scale mono" aria-hidden="true">
+              <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- 3. Coffee -->
+        <fieldset class="q">
+          <legend class="q__legend"><span class="q__num mono">03</span>Which coffee?</legend>
+          <div class="choices choices--list">
+            <label class="choice choice--row">
+              <input type="radio" name="coffee" [value]="rotationId" [checked]="store.coffeeId() === rotationId"
+                (change)="setCoffee(rotationId)" />
+              <span class="choice__box">
+                <span class="choice__label">Roaster’s rotation <span class="tag mono">Most picked</span></span>
+                <span class="choice__hint">Our pick each roast, matched to your brewer</span>
+                <span class="choice__price">$20</span>
+              </span>
+            </label>
+            <label *ngFor="let c of coffees" class="choice choice--row">
+              <input type="radio" name="coffee" [value]="c.id" [checked]="store.coffeeId() === c.id"
+                (change)="setCoffee(c.id)" />
+              <span class="choice__box">
+                <span class="choice__label">{{ c.name }} <span class="choice__origin">{{ c.origin }}</span></span>
+                <span class="choice__hint">{{ c.notes.join(', ') }}</span>
+                <span class="choice__price">${{ c.price }}</span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- 4. Cadence -->
+        <fieldset class="q">
+          <legend class="q__legend"><span class="q__num mono">04</span>How often?</legend>
+          <div class="choices choices--4">
+            <label *ngFor="let c of cadences" class="choice choice--compact">
+              <input type="radio" name="cadence" [value]="c.id" [checked]="store.cadence() === c.id"
+                (change)="setCadence(c.id)" />
+              <span class="choice__box">
+                <span class="choice__label">{{ c.label }}</span>
+              </span>
+            </label>
+          </div>
+          <p class="q__note">Subscriptions save 12% on every delivery. “Just once” is a one-off order at full price.</p>
+        </fieldset>
+      </form>
+
+      <div class="builder__summary">
+        <kiln-roast-ticket />
+      </div>
+    </div>
+  </div>
+</section>

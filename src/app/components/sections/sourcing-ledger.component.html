@@ -1,0 +1,46 @@
+<section class="ledger section" id="sourcing" aria-labelledby="ledger-title">
+  <svg class="ledger__topo" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <path *ngFor="let d of lines" [attr.d]="d" />
+  </svg>
+
+  <div class="container ledger__inner">
+    <header class="ledger__head">
+      <p class="kicker">No. 04 — Sourcing</p>
+      <h2 class="display h-section" id="ledger-title" kilnSplitWords kilnReveal="words">
+        We publish <em>what we pay</em>.
+      </h2>
+      <p class="lead" kilnReveal revealDelay="0.15">
+        “Direct trade” means little without numbers. These are the prices we paid our partner farms
+        for this year’s harvest — per pound of green coffee, before we roast a single bean.
+      </p>
+    </header>
+
+    <div class="ledger__table-wrap" kilnReveal>
+      <table class="ledger__table">
+        <caption class="visually-hidden">Prices paid to partner farms, per pound of green coffee</caption>
+        <thead>
+          <tr class="mono">
+            <th scope="col">Farm</th>
+            <th scope="col">Country</th>
+            <th scope="col">Years together</th>
+            <th scope="col" class="num">Paid / lb</th>
+            <th scope="col" class="num">vs. commodity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of rows">
+            <th scope="row" class="ledger__farm">{{ r.farm }}</th>
+            <td data-label="Country">{{ r.country }}</td>
+            <td data-label="Years together">{{ r.years }} {{ r.years === 1 ? 'year' : 'years' }}</td>
+            <td data-label="Paid / lb" class="num tabular">{{ r.paid }}</td>
+            <td data-label="vs. commodity" class="num ledger__ratio tabular">{{ r.ratio }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="ledger__note">
+        FOB prices, 2024–25 harvest. Commodity reference: average New York “C” market price, $1.78/lb.
+        Full contracts available on request.
+      </p>
+    </div>
+  </div>
+</section>

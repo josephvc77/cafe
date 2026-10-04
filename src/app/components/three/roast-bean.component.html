@@ -1,0 +1,19 @@
+<div class="halo" aria-hidden="true"></div>
+
+<!-- SVG fallback / placeholder: identical silhouette and roast colour -->
+<svg class="fallback" [class.is-hidden]="ready()" viewBox="0 0 200 260" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient [attr.id]="gradId" cx="35%" cy="28%" r="75%">
+      <stop offset="0" stop-color="#fff" stop-opacity=".38" />
+      <stop offset=".45" stop-color="#fff" stop-opacity="0" />
+      <stop offset="1" stop-color="#000" stop-opacity=".45" />
+    </radialGradient>
+  </defs>
+  <g transform="rotate(-24 100 130)">
+    <ellipse cx="100" cy="130" rx="74" ry="104" class="fallback__body" />
+    <ellipse cx="100" cy="130" rx="74" ry="104" [attr.fill]="'url(#' + gradId + ')'" />
+    <path d="M96 34 C 124 70, 74 104, 100 132 S 78 196, 104 226" class="fallback__crease" />
+  </g>
+</svg>
+
+<canvas #canvas class="canvas" [class.is-ready]="ready()" aria-hidden="true"></canvas>

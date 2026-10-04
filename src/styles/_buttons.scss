@@ -1,0 +1,134 @@
+// ============================================================
+// BUTTONS — applied to <a> or <button> so semantics stay native.
+// .btn (primary, ember) · .btn--ink · .btn--ghost · .btn--link
+// ============================================================
+
+.btn {
+  --btn-bg: var(--accent);
+  --btn-fg: var(--accent-fg);
+  --btn-border: transparent;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: 3.25rem;
+  padding: 0 var(--space-5) 0 var(--space-6);
+  border: 1px solid var(--btn-border);
+  border-radius: var(--radius-pill);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  white-space: nowrap;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+
+  // Heat fill that rises from the bottom on hover
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--btn-fill, var(--accent-hover));
+    border-radius: inherit;
+    transform: translateY(101%);
+    transition: transform var(--dur-slow) var(--ease-out);
+  }
+
+  &__arrow {
+    display: inline-grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--btn-fg) 16%, transparent);
+    transition: transform var(--dur-base) var(--ease-out);
+
+    svg {
+      width: 0.9rem;
+      height: 0.9rem;
+    }
+  }
+
+  @media (hover: hover) {
+    &:hover::before {
+      transform: translateY(0);
+    }
+
+    &:hover .btn__arrow {
+      transform: translateX(3px);
+    }
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    cursor: not-allowed;
+    opacity: 0.5;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  &:focus-visible {
+    outline-offset: 4px;
+    border-radius: var(--radius-pill);
+  }
+}
+
+.btn--ink {
+  --btn-bg: var(--fg);
+  --btn-fg: var(--bg);
+  --btn-fill: var(--accent);
+}
+
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--fg);
+  --btn-border: var(--line-strong);
+  --btn-fill: var(--fg);
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--bg);
+    }
+  }
+}
+
+.btn--block {
+  width: 100%;
+}
+
+// Understated text action
+.btn--link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) 0;
+  border: 0;
+  background: none;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 0.35em;
+  transition: text-decoration-color var(--dur-base) var(--ease-out), color var(--dur-base);
+
+  @media (hover: hover) {
+    &:hover {
+      color: var(--accent);
+      text-decoration-color: currentColor;
+    }
+  }
+}

@@ -1,0 +1,110 @@
+<article class="rt ticket" aria-labelledby="rt-title">
+  <header class="rt__head">
+    <p class="mono rt__kind" id="rt-title">Your roast ticket</p>
+    <p class="rt__stamp mono" aria-hidden="true">Roast<br /><strong>{{ roastDay.slice(0, 3) }}</strong></p>
+  </header>
+
+  <!-- ============ SUMMARY ============ -->
+  <ng-container *ngIf="step() === 'summary' || step() === 'details' || step() === 'sending'">
+    <div class="rt__coffee">
+      <p class="rt__coffee-name">{{ plan().coffee?.name ?? 'Roaster’s rotation' }}</p>
+      <p class="rt__coffee-sub">
+        {{ plan().coffee ? plan().coffee!.origin + ' · ' + plan().coffee!.notes.join(', ') : 'A different coffee each roast' }}
+      </p>
+    </div>
+
+    <dl class="rt__lines">
+      <div class="leader"><dt>Brewing</dt><dd>{{ methodLabel() }}</dd></div>
+      <div class="leader"><dt>Bags</dt><dd>{{ bagsLabel() }}</dd></div>
+      <div class="leader"><dt>Delivery</dt><dd>{{ cadenceLabel() }}</dd></div>
+      <div class="leader"><dt>Roasted</dt><dd>{{ roastDate }}</dd></div>
+      <div class="leader"><dt>At your door</dt><dd>{{ deliveryDate }}</dd></div>
+    </dl>
+
+    <div class="ticket__tear" aria-hidden="true"></div>
+
+    <dl class="rt__money tabular">
+      <div class="leader"><dt>Coffee</dt><dd>{{ plan().subtotal | currency: 'USD' }}</dd></div>
+      <div class="leader" *ngIf="plan().discount > 0">
+        <dt>Subscriber saving</dt><dd class="rt__saving">−{{ plan().discount | currency: 'USD' }}</dd>
+      </div>
+      <div class="leader">
+        <dt>Shipping</dt><dd>{{ plan().shipping === 0 ? 'Free' : (plan().shipping | currency: 'USD') }}</dd>
+      </div>
+    </dl>
+
+    <div class="rt__total" aria-live="polite" aria-atomic="true">
+      <p class="mono">{{ isOnce() ? 'Total' : 'Per delivery' }}</p>
+      <p class="rt__total-value tabular">{{ plan().total | currency: 'USD' }}</p>
+      <p class="rt__per-cup mono">≈ {{ plan().perCup | currency: 'USD' }} a cup</p>
+    </div>
+
+    <p class="rt__fresh" [class.is-warn]="!plan().staysFresh">
+      <kiln-icon [name]="plan().staysFresh ? 'check' : 'close'" [size]="16" />
+      <span *ngIf="plan().staysFresh">Each bag lasts about {{ plan().daysPerBag }} days — well inside its peak.</span>
+      <span *ngIf="!plan().staysFresh">
+        Each bag would last ~{{ plan().daysPerBag }} days. Choose a shorter cadence to drink it at its best.
+      </span>
+    </p>
+
+    <button *ngIf="step() === 'summary'" type="button" class="btn btn--block" (click)="begin()">
+      {{ isOnce() ? 'Order this roast' : 'Start my subscription' }}
+      <span class="btn__arrow"><kiln-icon name="arrow-right" /></span>
+    </button>
+    <p *ngIf="step() === 'summary'" class="rt__assure">
+      No commitment. Pause, skip or cancel any time — nothing is charged until your coffee is roasted.
+    </p>
+  </ng-container>
+
+  <!-- ============ DETAILS ============ -->
+  <form
+    *ngIf="step() === 'details' || step() === 'sending'"
+    class="signup"
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+    novalidate
+    aria-label="Your details"
+  >
+    <div class="ticket__tear" aria-hidden="true"></div>
+
+    <div class="field">
+      <label for="su-name">Name</label>
+      <input #firstField id="su-name" type="text" formControlName="name" autocomplete="name"
+        [attr.aria-invalid]="showError('name')" [attr.aria-describedby]="showError('name') ? 'su-name-err' : null" />
+      <p class="field__error" id="su-name-err" *ngIf="showError('name')">Please add your name.</p>
+    </div>
+
+    <div class="field">
+      <label for="su-email">Email</label>
+      <input id="su-email" type="email" formControlName="email" autocomplete="email" inputmode="email"
+        [attr.aria-invalid]="showError('email')" [attr.aria-describedby]="showError('email') ? 'su-email-err' : null" />
+      <p class="field__error" id="su-email-err" *ngIf="showError('email')">Enter an email like name&#64;example.com.</p>
+    </div>
+
+    <div class="field">
+      <label for="su-zip">ZIP code <span class="field__hint">— so we can confirm delivery day</span></label>
+      <input id="su-zip" type="text" formControlName="postcode" autocomplete="postal-code" inputmode="numeric"
+        [attr.aria-invalid]="showError('postcode')" [attr.aria-describedby]="showError('postcode') ? 'su-zip-err' : null" />
+      <p class="field__error" id="su-zip-err" *ngIf="showError('postcode')">Enter a 5-digit US ZIP code.</p>
+    </div>
+
+    <button type="submit" class="btn btn--block" [attr.aria-disabled]="step() === 'sending'" [disabled]="step() === 'sending'">
+      {{ step() === 'sending' ? 'Reserving your roast…' : 'Reserve & continue to payment' }}
+      <span class="btn__arrow" *ngIf="step() !== 'sending'"><kiln-icon name="arrow-right" /></span>
+    </button>
+    <button type="button" class="btn--link signup__back" (click)="back()" [disabled]="step() === 'sending'">
+      Back to my order
+    </button>
+  </form>
+
+  <!-- ============ DONE ============ -->
+  <div *ngIf="step() === 'done'" class="rt__done" role="status">
+    <p class="rt__done-stamp mono" aria-hidden="true">Booked</p>
+    <h3 class="rt__done-title" tabindex="-1" #doneHeading>You’re on {{ roastDay }}’s roast.</h3>
+    <p>
+      We’ve emailed <strong>{{ form.controls.email.value }}</strong> a secure payment link.
+      Your coffee will be roasted {{ roastDate }} and at your door {{ deliveryDate }}.
+    </p>
+    <p class="mono rt__ref">Reference {{ reference() }}</p>
+  </div>
+</article>

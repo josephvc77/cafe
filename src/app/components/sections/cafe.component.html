@@ -1,0 +1,54 @@
+<section class="cafe section night" id="cafe" aria-labelledby="cafe-title">
+  <div class="container cafe__grid">
+    <div class="cafe__intro">
+      <p class="kicker">No. 06 — The roastery</p>
+      <h2 class="display h-section" id="cafe-title" kilnSplitWords kilnReveal="words">
+        Come and smell it <em>roasting</em>.
+      </h2>
+      <p class="lead" kilnReveal revealDelay="0.15">
+        Our roaster sits behind the bar in a converted foundry. Drop in for a cup, take home a bag
+        that was roasted this week, or join our free public cupping every Saturday at 10.
+      </p>
+
+      <p class="cafe__status mono" [class.is-open]="status.open">
+        <span class="cafe__dot" aria-hidden="true"></span>{{ status.text }}
+      </p>
+
+      <address class="cafe__address">
+        {{ brand.address.line1 }}<br />{{ brand.address.line2 }}
+      </address>
+
+      <div class="cafe__actions">
+        <a class="btn" [href]="mapsUrl" target="_blank" rel="noopener">
+          Get directions
+          <span class="btn__arrow"><kiln-icon name="pin" /></span>
+          <span class="visually-hidden">(opens Google Maps in a new tab)</span>
+        </a>
+        <a class="btn--link" [href]="telHref">{{ brand.phone }}</a>
+      </div>
+    </div>
+
+    <div class="cafe__side">
+      <!-- Door-sign seal: rotating type ring -->
+      <svg class="seal" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+        <defs><path id="seal-ring" d="M100 100 m-78 0 a78 78 0 1 1 156 0 a78 78 0 1 1 -156 0" /></defs>
+        <g class="seal__ring">
+          <text><textPath href="#seal-ring" textLength="486">{{ ringText }}</textPath></text>
+        </g>
+        <circle cx="100" cy="100" r="56" class="seal__inner" />
+        <text x="100" y="96" text-anchor="middle" class="seal__est">Est.</text>
+        <text x="100" y="124" text-anchor="middle" class="seal__year">2016</text>
+      </svg>
+
+      <table class="hours" kilnReveal>
+        <caption class="mono">Opening hours</caption>
+        <tbody>
+          <tr *ngFor="let h of hours" [class.is-today]="h.d === today">
+            <th scope="row">{{ h.day }}<span class="visually-hidden" *ngIf="h.d === today"> (today)</span></th>
+            <td>{{ h.text }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

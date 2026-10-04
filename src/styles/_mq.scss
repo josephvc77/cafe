@@ -1,0 +1,32 @@
+// Breakpoint mixins — usable from any component via `@use 'mq' as *;`
+$breakpoints: (
+  sm: 390px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+  xxl: 1920px,
+);
+
+@mixin up($bp) {
+  @media (min-width: map-get($breakpoints, $bp)) {
+    @content;
+  }
+}
+
+@mixin down($bp) {
+  @media (max-width: calc(#{map-get($breakpoints, $bp)} - 0.02px)) {
+    @content;
+  }
+}
+
+@mixin motion-ok {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}
+
+@mixin fine-pointer {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}

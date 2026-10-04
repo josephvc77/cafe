@@ -1,0 +1,88 @@
+// Typographic primitives. Fraunces axes: opsz (optical size), SOFT, WONK.
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 380;
+  font-variation-settings: 'opsz' 144, 'SOFT' 30, 'WONK' 0;
+  line-height: var(--lh-tight);
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+
+  em {
+    font-style: italic;
+    font-variation-settings: 'opsz' 144, 'SOFT' 100, 'WONK' 1;
+    font-weight: 330;
+  }
+}
+
+.h-hero {
+  font-size: var(--fs-hero);
+}
+
+.h-section {
+  font-size: var(--fs-h2);
+}
+
+.h-sub {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  font-weight: 420;
+  font-variation-settings: 'opsz' 48, 'SOFT' 50;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  color: var(--fg-muted);
+  max-width: var(--measure);
+  text-wrap: pretty;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+// Section kicker: "No. 02 — The roast"
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+
+  &::before {
+    content: '';
+    width: 1.75rem;
+    height: 1px;
+    background: currentColor;
+  }
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+// Split-words directive output
+.split-word {
+  display: inline-block;
+  overflow: clip;
+  overflow-clip-margin: 0.08em;
+  vertical-align: top;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.split-word__inner {
+  display: inline-block;
+  will-change: transform;
+}

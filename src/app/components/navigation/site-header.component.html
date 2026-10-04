@@ -1,0 +1,63 @@
+<header class="header" [class.is-open]="open()" #bar>
+  <div class="header__inner container">
+    <a class="logo" href="#top" [attr.aria-label]="brand.legalName + ' — back to top'">
+      <span class="logo__mark" aria-hidden="true"></span>
+      <span class="logo__word">{{ brand.name }}</span>
+      <span class="logo__sub mono">Coffee Roasters</span>
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      <ul role="list" class="nav__list">
+        <li *ngFor="let item of brand.nav">
+          <a class="nav__link" [href]="item.href">{{ item.label }}</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <p class="roast-chip mono">
+        <span class="roast-chip__dot" aria-hidden="true"></span>
+        Next roast · <time>{{ nextRoast }}</time>
+      </p>
+      <a class="btn btn--ink header__cta" [href]="brand.primaryCta.href">Subscribe</a>
+      <button
+        #toggle
+        type="button"
+        class="menu-toggle"
+        [attr.aria-expanded]="open()"
+        aria-controls="mobile-menu"
+        (click)="toggleMenu()"
+      >
+        <span class="visually-hidden">{{ open() ? 'Close menu' : 'Open menu' }}</span>
+        <kiln-icon [name]="open() ? 'close' : 'menu'" [size]="22" />
+      </button>
+    </div>
+  </div>
+</header>
+
+<div
+  *ngIf="open()"
+  #sheet
+  id="mobile-menu"
+  class="sheet"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Menu"
+>
+  <nav aria-label="Mobile">
+    <ol role="list" class="sheet__list">
+      <li *ngFor="let item of brand.nav; let i = index" [style.--i]="i">
+        <a class="sheet__link" [href]="item.href" (click)="close(false)">
+          <span class="mono sheet__num">0{{ i + 1 }}</span>{{ item.label }}
+        </a>
+      </li>
+    </ol>
+  </nav>
+  <div class="sheet__foot">
+    <p class="mono">Next roast · {{ nextRoast }}</p>
+    <a class="btn btn--block" [href]="brand.primaryCta.href" (click)="close(false)">
+      {{ brand.primaryCta.label }}
+      <span class="btn__arrow"><kiln-icon name="arrow-right" /></span>
+    </a>
+  </div>
+</div>

@@ -1,0 +1,184 @@
+@use 'mq' as *;
+
+.cafe {
+  &__grid {
+    display: grid;
+    gap: var(--space-8);
+
+    @include up(lg) {
+      grid-template-columns: 7fr 5fr;
+      align-items: center;
+    }
+  }
+
+  &__intro {
+    display: grid;
+    gap: var(--space-5);
+    justify-items: start;
+
+    h2 em {
+      color: var(--accent);
+    }
+  }
+
+  &__status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    color: var(--fg-muted);
+
+    &.is-open {
+      color: var(--fg);
+    }
+  }
+
+  &__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--fg-muted);
+
+    .is-open & {
+      background: #7fc49a;
+      box-shadow: 0 0 0 3px rgb(127 196 154 / 0.25);
+    }
+  }
+
+  &__address {
+    font-style: normal;
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    font-variation-settings: 'opsz' 48, 'SOFT' 60;
+    letter-spacing: -0.015em;
+    line-height: 1.2;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4) var(--space-6);
+  }
+
+  &__side {
+    position: relative;
+    display: grid;
+    gap: var(--space-6);
+    justify-items: center;
+
+    @include up(lg) {
+      justify-items: stretch;
+    }
+  }
+}
+
+// ---------- Seal ----------
+.seal {
+  width: clamp(9rem, 30vw, 13rem);
+  height: auto;
+  overflow: visible;
+
+  @include up(lg) {
+    justify-self: end;
+    // Tucks into the space beside the hours caption.
+    margin-bottom: calc(var(--space-8) * -1);
+    width: 10rem;
+  }
+
+  text {
+    fill: var(--fg);
+  }
+
+  &__ring {
+    transform-origin: 100px 100px;
+
+    text {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      animation: spin 40s linear infinite;
+    }
+  }
+
+  &__inner {
+    fill: var(--accent);
+  }
+
+  &__est {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    fill: var(--accent-fg) !important;
+  }
+
+  &__year {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-variation-settings: 'opsz' 72, 'SOFT' 100, 'WONK' 1;
+    letter-spacing: -0.02em;
+    fill: var(--accent-fg) !important;
+  }
+}
+
+// ---------- Hours ----------
+.hours {
+  width: 100%;
+  border-collapse: collapse;
+
+  caption {
+    padding-bottom: var(--space-3);
+    color: var(--fg-muted);
+    text-align: left;
+  }
+
+  th,
+  td {
+    padding: var(--space-3) 0;
+    border-top: var(--hairline);
+    text-align: left;
+    font-weight: 400;
+  }
+
+  td {
+    text-align: right;
+    color: var(--fg-muted);
+  }
+
+  tr:last-child th,
+  tr:last-child td {
+    border-bottom: var(--hairline);
+  }
+
+  .is-today {
+    th,
+    td {
+      color: var(--fg);
+      font-weight: 600;
+    }
+
+    th::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-right: var(--space-2);
+      border-radius: 50%;
+      background: var(--accent);
+      vertical-align: 0.15em;
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

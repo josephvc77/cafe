@@ -1,0 +1,237 @@
+@use 'mq' as *;
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  padding-top: calc(var(--header-h) + var(--space-6));
+  padding-bottom: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @include up(lg) {
+    padding-top: calc(var(--header-h) + var(--space-5));
+  }
+
+  &__grid {
+    display: grid;
+    gap: var(--space-6);
+    align-items: center;
+
+    @include up(lg) {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--space-5);
+    }
+  }
+
+  &__copy {
+    position: relative;
+    z-index: var(--z-raised);
+    display: grid;
+    gap: var(--space-5);
+
+    @include up(lg) {
+      grid-column: 1 / span 8;
+      grid-row: 1;
+      gap: var(--space-6);
+    }
+  }
+
+  &__title {
+    // Headline intentionally runs into the bean column on large screens.
+    max-width: 11ch;
+
+    @include up(lg) {
+      margin-right: -12%;
+    }
+
+    em {
+      color: var(--accent);
+    }
+  }
+
+  &__lead {
+    @include up(lg) {
+      max-width: 31rem;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4) var(--space-6);
+    padding-top: var(--space-2);
+
+    @include down(sm) {
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+
+  // ---------- Visual: bean + ticket ----------
+  &__visual {
+    position: relative;
+    width: 100%;
+    max-width: 30rem;
+    margin-inline: auto;
+
+    @include up(md) {
+      max-width: 34rem;
+    }
+
+    @include up(lg) {
+      grid-column: 8 / -1;
+      grid-row: 1;
+      max-width: none;
+      margin-right: calc(var(--gutter) * -0.5);
+    }
+  }
+
+  &__visual-inner {
+    position: relative;
+  }
+
+  &__bean {
+    aspect-ratio: 1 / 1.08;
+  }
+
+  &__readout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: calc(var(--space-4) * -1);
+    color: var(--fg-muted);
+    font-size: 0.6875rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__readout-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+
+    @include motion-ok {
+      animation: pulse 1.6s var(--ease-in-out) infinite;
+    }
+  }
+
+  &__ticket {
+    position: absolute;
+    left: -2%;
+    bottom: 10%;
+    width: min(15.5rem, 62%);
+    padding: var(--space-5) var(--space-5) var(--space-4);
+    display: grid;
+    gap: var(--space-3);
+    transform: rotate(-4deg);
+    font-size: var(--fs-small);
+
+    @include down(md) {
+      left: 0;
+      bottom: 6%;
+      width: min(13.5rem, 58%);
+      padding: var(--space-4);
+      gap: var(--space-2);
+    }
+
+    @include up(lg) {
+      left: -10%;
+      bottom: -2%;
+    }
+
+    @include up(xl) {
+      left: -12%;
+      bottom: 12%;
+    }
+  }
+
+  &__scroll {
+    position: absolute;
+    left: 50%;
+    bottom: var(--space-5);
+    display: none;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--fg-muted);
+    text-decoration: none;
+    transform: translateX(-50%);
+
+    @include up(lg) {
+      display: inline-flex;
+    }
+
+    kiln-icon {
+      display: contents;
+    }
+
+    @include motion-ok {
+      svg {
+        animation: nudge 2.4s var(--ease-in-out) infinite;
+      }
+    }
+  }
+}
+
+// ---------- Ticket internals ----------
+.ticket-row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--fg-muted);
+  font-size: 0.625rem;
+}
+
+.ticket-date {
+  display: grid;
+  gap: 2px;
+
+  .mono {
+    font-size: 0.625rem;
+    color: var(--accent);
+  }
+
+  strong {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 1.3rem + 1vw, 2.1rem);
+    font-weight: 450;
+    font-variation-settings: 'opsz' 72, 'SOFT' 80, 'WONK' 1;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+}
+
+.ticket-lines {
+  display: grid;
+  gap: var(--space-1);
+  font-size: 0.8125rem;
+
+  dt {
+    color: var(--fg-muted);
+    white-space: nowrap;
+  }
+
+  dd {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+}
+
+.ticket-count {
+  font-size: 0.625rem;
+  color: var(--fg-muted);
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@keyframes nudge {
+  50% {
+    transform: translateY(4px);
+  }
+}

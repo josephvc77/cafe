@@ -1,0 +1,239 @@
+@use 'mq' as *;
+
+:host {
+  display: block;
+}
+
+.rt {
+  --ticket-bg: var(--surface);
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-7) var(--space-5) var(--space-6);
+
+  @include up(md) {
+    padding: var(--space-7) var(--space-6) var(--space-6);
+  }
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  &__kind {
+    color: var(--fg-muted);
+  }
+
+  &__stamp {
+    display: grid;
+    place-items: center;
+    align-content: center;
+    width: 4.25rem;
+    height: 4.25rem;
+    margin: calc(var(--space-5) * -1) calc(var(--space-2) * -1) calc(var(--space-6) * -1) 0;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    color: var(--accent);
+    font-size: 0.5625rem;
+    line-height: 1.2;
+    text-align: center;
+    transform: rotate(10deg);
+
+    strong {
+      font-size: 0.9rem;
+    }
+  }
+
+  &__coffee-name {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 1.6rem + 1.6vw, 2.75rem);
+    font-weight: 400;
+    font-variation-settings: 'opsz' 96, 'SOFT' 80, 'WONK' 1;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  &__coffee-sub {
+    margin-top: var(--space-2);
+    color: var(--fg-muted);
+    font-size: var(--fs-small);
+  }
+
+  &__lines,
+  &__money {
+    display: grid;
+    gap: var(--space-2);
+    font-size: 0.9375rem;
+
+    dt {
+      color: var(--fg-muted);
+    }
+
+    dd {
+      font-weight: 600;
+    }
+  }
+
+  &__saving {
+    color: var(--success);
+  }
+
+  &__total {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 0 var(--space-4);
+
+    .mono {
+      color: var(--fg-muted);
+    }
+  }
+
+  &__total-value {
+    grid-row: span 2;
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 2rem + 2vw, 3.5rem);
+    font-weight: 380;
+    font-variation-settings: 'opsz' 144, 'SOFT' 30;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  &__per-cup {
+    font-size: 0.6875rem;
+  }
+
+  &__fresh {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    border-radius: var(--radius-xs);
+    background: color-mix(in srgb, var(--success) 10%, transparent);
+    color: var(--success);
+    font-size: var(--fs-small);
+    line-height: 1.4;
+
+    kiln-icon {
+      display: contents;
+    }
+
+    svg {
+      flex: none;
+      margin-top: 1px;
+    }
+
+    &.is-warn {
+      background: color-mix(in srgb, var(--warning) 12%, transparent);
+      color: var(--warning);
+    }
+  }
+
+  &__assure {
+    color: var(--fg-muted);
+    font-size: 0.8125rem;
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  // Done state
+  &__done {
+    display: grid;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+
+    p {
+      color: var(--fg-muted);
+    }
+
+    strong {
+      color: var(--fg);
+    }
+  }
+
+  &__done-stamp {
+    justify-self: start;
+    padding: var(--space-2) var(--space-4);
+    border: 2px solid var(--accent);
+    border-radius: var(--radius-xs);
+    color: var(--accent);
+    font-size: 1rem;
+    transform: rotate(-6deg);
+    animation: stamp 520ms var(--ease-stamp) both;
+  }
+
+  &__done-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 1.4rem + 1.6vw, 2.5rem);
+    font-weight: 400;
+    font-variation-settings: 'opsz' 96, 'SOFT' 80;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    outline: none;
+  }
+
+  &__ref {
+    font-size: 0.6875rem;
+  }
+}
+
+// ---------- Signup form ----------
+.signup {
+  display: grid;
+  gap: var(--space-4);
+
+  &__back {
+    justify-self: center;
+    font-size: var(--fs-small);
+  }
+}
+
+.field {
+  display: grid;
+  gap: var(--space-2);
+
+  label {
+    font-size: var(--fs-small);
+    font-weight: 600;
+  }
+
+  &__hint {
+    color: var(--fg-muted);
+    font-weight: 400;
+  }
+
+  input {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0 var(--space-4);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    font-size: 1rem; // ≥16px avoids iOS zoom
+    transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+
+    &:focus-visible {
+      outline: none;
+      border-color: var(--fg);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 35%, transparent);
+    }
+
+    &[aria-invalid='true'] {
+      border-color: var(--error);
+    }
+  }
+
+  &__error {
+    color: var(--error);
+    font-size: 0.8125rem;
+  }
+}
+
+@keyframes stamp {
+  from {
+    opacity: 0;
+    transform: scale(1.6) rotate(-14deg);
+  }
+}

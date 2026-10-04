@@ -1,0 +1,99 @@
+// ============================================================
+// MATERIALS — paper, ticket, stamp, frost.
+// The brand's material language. Glass is intentionally limited to `.frost`.
+// ============================================================
+
+// Paper sheet: a surface that sits on the page like a printed card.
+.paper {
+  background: var(--surface);
+  box-shadow: var(--shadow-paper);
+  border-radius: var(--radius-xs);
+}
+
+// Ticket: perforated top/bottom edges via masks. Works on any background.
+.ticket {
+  --perf: 7px;
+  position: relative;
+  isolation: isolate;
+  color: var(--fg);
+  // Shadow on the parent so it follows the perforated silhouette of ::before.
+  filter: drop-shadow(0 18px 22px rgb(46 28 16 / 0.2));
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--ticket-bg, var(--surface));
+    border-radius: var(--radius-sm);
+    -webkit-mask:
+      radial-gradient(circle at 50% 0, #0000 calc(var(--perf) * 0.5), #000 calc(var(--perf) * 0.5 + 0.5px)) top / var(--perf) 51% repeat-x,
+      radial-gradient(circle at 50% 100%, #0000 calc(var(--perf) * 0.5), #000 calc(var(--perf) * 0.5 + 0.5px)) bottom / var(--perf) 51% repeat-x;
+    mask:
+      radial-gradient(circle at 50% 0, #0000 calc(var(--perf) * 0.5), #000 calc(var(--perf) * 0.5 + 0.5px)) top / var(--perf) 51% repeat-x,
+      radial-gradient(circle at 50% 100%, #0000 calc(var(--perf) * 0.5), #000 calc(var(--perf) * 0.5 + 0.5px)) bottom / var(--perf) 51% repeat-x;
+  }
+
+  // Tear line inside a ticket
+  &__tear {
+    height: 0;
+    border-top: 1.5px dashed var(--line-strong);
+    opacity: 0.45;
+    margin-inline: calc(var(--space-5) * -1);
+  }
+}
+
+// Dotted leader row: "Roasted on ........ Tue 29 Sep"
+.leader {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+
+  &::after {
+    content: '';
+    order: 1;
+    flex: 1;
+    min-width: 1rem;
+    border-bottom: 1px dotted var(--line-strong);
+    opacity: 0.6;
+    transform: translateY(-0.25em);
+  }
+
+  > :last-child {
+    order: 2;
+    text-align: right;
+  }
+}
+
+// Frosted surface — "steamed window". Used only by the scrolled header.
+.frost {
+  background: var(--frost-bg);
+  border-bottom: 1px solid var(--frost-border);
+  box-shadow: inset 0 1px 0 var(--frost-highlight);
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    -webkit-backdrop-filter: blur(var(--frost-blur)) saturate(1.3);
+    backdrop-filter: blur(var(--frost-blur)) saturate(1.3);
+  }
+
+  @media (max-width: 767px) {
+    --frost-blur: 8px;
+  }
+}
+
+// Night surface for the roast chapter
+.night {
+  --bg: var(--night-bg);
+  --fg: var(--night-fg);
+  --fg-muted: var(--night-muted);
+  --line: var(--night-line);
+  --line-strong: rgb(239 229 211 / 0.55);
+  --surface: var(--night-bg-2);
+  --accent: #e0673a;
+  --accent-hover: #f07a4b;
+  --accent-fg: #1a0f0a;
+  --focus: #f0925f;
+  background: var(--bg);
+  color: var(--fg);
+  color-scheme: dark;
+}

@@ -1,0 +1,145 @@
+// ============================================================
+// DESIGN TOKENS — rebrand here.
+// Raw palette → semantic tokens → components only use semantic.
+// ============================================================
+
+:root {
+  // ---------- Raw palette ----------
+  --palette-paper: #f1eadc;
+  --palette-paper-2: #e7dcc7;
+  --palette-kraft: #c7a57a;
+  --palette-kraft-dark: #9c7b52;
+  --palette-ink: #1d1511;
+  --palette-ink-2: #4b3d33;
+  --palette-ember: #b8431d;
+  --palette-ember-hot: #d9582b;
+  --palette-green: #7e8c5a;
+  --palette-green-ink: #4f5a35;
+  --palette-night: #15100d;
+  --palette-night-2: #211914;
+  --palette-cream: #efe5d3;
+  --palette-cream-muted: #b5a893;
+
+  // ---------- Semantic ----------
+  --bg: var(--palette-paper);
+  --bg-alt: var(--palette-paper-2);
+  --surface: #f7f1e5;
+  --fg: var(--palette-ink);
+  --fg-muted: var(--palette-ink-2);
+  --line: rgb(29 21 17 / 0.18);
+  --line-strong: rgb(29 21 17 / 0.75);
+  --accent: var(--palette-ember);
+  --accent-hover: #9e3714;
+  --accent-fg: #fff7ec;
+  --secondary: var(--palette-green-ink);
+  --focus: var(--palette-ember);
+
+  --success: #2f6b48;
+  --warning: #a86a12;
+  --error: #a3261b;
+
+  // Always-dark surfaces (roast chapter)
+  --night-bg: var(--palette-night);
+  --night-bg-2: var(--palette-night-2);
+  --night-fg: var(--palette-cream);
+  --night-muted: var(--palette-cream-muted);
+  --night-line: rgb(239 229 211 / 0.16);
+
+  // ---------- Typography ----------
+  --font-display: 'Fraunces', 'Iowan Old Style', 'Georgia', serif;
+  --font-body: 'Instrument Sans', 'Helvetica Neue', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  --fs-hero: clamp(3.1rem, 1.2rem + 7.6vw, 9.75rem);
+  --fs-h2: clamp(2.35rem, 1.3rem + 4.2vw, 5.75rem);
+  --fs-h3: clamp(1.4rem, 1.15rem + 1vw, 2.1rem);
+  --fs-lead: clamp(1.125rem, 1.02rem + 0.45vw, 1.375rem);
+  --fs-body: 1.0625rem;
+  --fs-small: 0.9rem;
+  --fs-mono: 0.75rem;
+
+  --lh-tight: 0.92;
+  --lh-heading: 1.02;
+  --lh-body: 1.55;
+
+  // ---------- Spacing (4px base) ----------
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-section: clamp(5rem, 3rem + 8vw, 11rem);
+  --gutter: clamp(1rem, 0.4rem + 2.6vw, 2.75rem);
+
+  // ---------- Layout ----------
+  --container: 90rem;
+  --container-narrow: 62rem;
+  --measure: 36rem;
+  --header-h: 4.5rem;
+
+  // ---------- Shape ----------
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-pill: 999px;
+  --hairline: 1px solid var(--line);
+  --rule: 1px solid var(--line-strong);
+
+  // ---------- Elevation (used sparingly) ----------
+  --shadow-paper: 0 1px 0 rgb(255 255 255 / 0.5) inset, 0 24px 48px -28px rgb(46 28 16 / 0.45);
+  --shadow-lift: 0 30px 60px -30px rgb(46 28 16 / 0.55);
+
+  // ---------- Frosted (the one "glass" surface: steamed window header) ----------
+  --frost-bg: rgb(241 234 220 / 0.72);
+  --frost-border: rgb(29 21 17 / 0.1);
+  --frost-highlight: rgb(255 255 255 / 0.55);
+  --frost-blur: 14px;
+
+  // ---------- Motion ----------
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-stamp: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 180ms;
+  --dur-base: 320ms;
+  --dur-slow: 700ms;
+
+  // ---------- Z-index ----------
+  --z-base: 1;
+  --z-raised: 10;
+  --z-sticky: 50;
+  --z-header: 100;
+  --z-overlay: 200;
+  --z-grain: 300;
+
+  color-scheme: light;
+}
+
+// ---------- Dark mode: the "night roast" palette ----------
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17110e;
+    --bg-alt: #1f1814;
+    --surface: #251d18;
+    --fg: #efe5d3;
+    --fg-muted: #bcae98;
+    --line: rgb(239 229 211 / 0.16);
+    --line-strong: rgb(239 229 211 / 0.6);
+    --accent: #e0673a;
+    --accent-hover: #f07a4b;
+    --accent-fg: #1a0f0a;
+    --secondary: #a9b684;
+    --focus: #f0925f;
+    --success: #7fc49a;
+    --warning: #e0a94a;
+    --error: #ff8a7a;
+    --frost-bg: rgb(23 17 14 / 0.7);
+    --frost-border: rgb(239 229 211 / 0.1);
+    --frost-highlight: rgb(255 255 255 / 0.06);
+    --shadow-paper: 0 24px 48px -28px rgb(0 0 0 / 0.8);
+    --shadow-lift: 0 30px 60px -30px rgb(0 0 0 / 0.9);
+    color-scheme: dark;
+  }
+}

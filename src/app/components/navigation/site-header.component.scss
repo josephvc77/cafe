@@ -1,0 +1,224 @@
+@use 'mq' as *;
+
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: var(--z-header);
+  height: var(--header-h);
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+  border-bottom: 1px solid transparent;
+
+  &.is-scrolled {
+    // Frosted "steamed window" — the only glass surface on the site.
+    background: var(--frost-bg);
+    border-bottom-color: var(--frost-border);
+    box-shadow: inset 0 1px 0 var(--frost-highlight);
+
+    @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+      -webkit-backdrop-filter: blur(var(--frost-blur)) saturate(1.3);
+      backdrop-filter: blur(var(--frost-blur)) saturate(1.3);
+    }
+  }
+
+  &.is-open {
+    background: var(--bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-bottom-color: var(--line);
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    height: 100%;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  &__cta {
+    min-height: 2.6rem;
+    padding-inline: var(--space-5);
+    font-size: 0.9375rem;
+
+    @include down(md) {
+      display: none;
+    }
+  }
+}
+
+.logo {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  text-decoration: none;
+
+  &__mark {
+    align-self: center;
+    width: 0.8rem;
+    height: 1.05rem;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: rotate(-20deg);
+    // crease
+    background-image: linear-gradient(90deg, transparent 44%, rgb(0 0 0 / 0.55) 46% 54%, transparent 56%);
+  }
+
+  &__word {
+    font-family: var(--font-display);
+    font-size: 1.7rem;
+    font-weight: 500;
+    font-variation-settings: 'opsz' 72, 'SOFT' 100, 'WONK' 1;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  &__sub {
+    color: var(--fg-muted);
+    font-size: 0.625rem;
+
+    @include down(sm) {
+      display: none;
+    }
+  }
+}
+
+.nav {
+  @include down(lg) {
+    display: none;
+  }
+
+  &__list {
+    display: flex;
+    gap: var(--space-6);
+  }
+
+  &__link {
+    position: relative;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+    padding-block: var(--space-2);
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 2px;
+      height: 1px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform var(--dur-base) var(--ease-out);
+    }
+
+    @media (hover: hover) {
+      &:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+    }
+  }
+}
+
+.roast-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--fg-muted);
+  font-size: 0.6875rem;
+
+  @include down(xl) {
+    display: none;
+  }
+
+  &__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+}
+
+.menu-toggle {
+  display: none;
+  place-items: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  margin-right: calc(var(--space-2) * -1);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+
+  @include down(lg) {
+    display: grid;
+  }
+}
+
+// ---------- Mobile sheet ----------
+.sheet {
+  position: fixed;
+  inset: var(--header-h) 0 0;
+  z-index: calc(var(--z-header) - 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-6) var(--gutter) calc(var(--space-6) + env(safe-area-inset-bottom));
+  background: var(--bg);
+  animation: sheet-in 420ms var(--ease-out) both;
+
+  &__list {
+    display: grid;
+  }
+
+  li {
+    border-bottom: var(--hairline);
+    animation: item-in 600ms var(--ease-out) both;
+    animation-delay: calc(80ms + var(--i) * 50ms);
+  }
+
+  &__link {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 9vw, 3.25rem);
+    font-variation-settings: 'opsz' 96, 'SOFT' 50;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    text-decoration: none;
+  }
+
+  &__num {
+    color: var(--accent);
+  }
+
+  &__foot {
+    display: grid;
+    gap: var(--space-4);
+    color: var(--fg-muted);
+  }
+}
+
+@keyframes sheet-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes item-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}

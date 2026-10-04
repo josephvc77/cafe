@@ -1,0 +1,277 @@
+@use 'mq' as *;
+
+.roast {
+  position: relative;
+  padding-block: var(--space-section);
+  // Fades from page paper into the night palette
+  border-radius: clamp(1rem, 3vw, 2.5rem) clamp(1rem, 3vw, 2.5rem) 0 0;
+
+  &__head {
+    display: grid;
+    gap: var(--space-5);
+    max-width: 58rem;
+    margin-bottom: var(--space-8);
+
+    h2 em {
+      color: var(--accent);
+    }
+  }
+
+  &__body {
+    position: relative;
+    display: grid;
+
+    @include up(lg) {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: var(--space-5);
+    }
+  }
+
+  // ---------- Sticky visual ----------
+  &__visual {
+    position: sticky;
+    top: var(--header-h);
+    z-index: var(--z-raised);
+    background: var(--bg);
+    padding-bottom: var(--space-4);
+    // soft fade so stepping text slides under it gracefully
+    box-shadow: 0 24px 24px -4px var(--bg);
+
+    @include up(lg) {
+      grid-column: 6 / -1;
+      grid-row: 1;
+      align-self: start;
+      top: calc(var(--header-h) + var(--space-4));
+      padding-bottom: 0;
+      box-shadow: none;
+    }
+  }
+
+  &__visual-sticky {
+    display: grid;
+    grid-template-columns: 38% 1fr;
+    grid-template-areas:
+      'bean readout'
+      'chart chart';
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+
+    @include up(md) {
+      grid-template-columns: 30% 1fr;
+    }
+
+    @include up(lg) {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'bean'
+        'readout'
+        'chart';
+      height: calc(100svh - var(--header-h) - var(--space-7));
+      max-height: 56rem;
+      grid-template-rows: minmax(0, 1fr) auto auto;
+      gap: var(--space-4);
+    }
+  }
+
+  &__bean {
+    grid-area: bean;
+    aspect-ratio: 1;
+    --accent: #e0673a;
+
+    @include up(lg) {
+      aspect-ratio: auto;
+      height: 100%;
+      min-height: 12rem;
+    }
+  }
+
+  // ---------- Steps ----------
+  &__steps {
+    position: relative;
+    display: grid;
+    padding-top: 12svh;
+    padding-bottom: 20svh;
+
+    @include up(lg) {
+      grid-column: 1 / span 5;
+      grid-row: 1;
+      padding-top: 18svh;
+      padding-bottom: 30svh;
+    }
+  }
+
+  &__outro {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    padding-top: var(--space-6);
+    border-top: var(--hairline);
+
+    .display {
+      font-size: var(--fs-h3);
+      max-width: 22ch;
+    }
+  }
+}
+
+.step {
+  min-height: 52svh;
+  display: grid;
+  align-content: center;
+  gap: var(--space-3);
+  max-width: 28rem;
+  opacity: 0.28;
+  transition: opacity var(--dur-slow) var(--ease-out);
+
+  @include up(lg) {
+    min-height: 62svh;
+  }
+
+  &.is-active,
+  .is-static & {
+    opacity: 1;
+  }
+
+  &__meta {
+    display: flex;
+    gap: var(--space-4);
+    color: var(--fg-muted);
+
+    span:first-child {
+      color: var(--accent);
+    }
+  }
+
+  &__title {
+    font-size: clamp(1.75rem, 1.3rem + 2vw, 3rem);
+  }
+
+  &__body {
+    color: var(--fg-muted);
+    font-size: var(--fs-lead);
+    line-height: 1.5;
+  }
+}
+
+// ---------- Readout ----------
+.readout {
+  grid-area: readout;
+  display: grid;
+  gap: var(--space-3);
+
+  @include up(md) {
+    grid-template-columns: repeat(3, auto);
+    justify-content: start;
+    gap: var(--space-6);
+  }
+
+  @include up(lg) {
+    justify-content: space-between;
+    padding-block: var(--space-3);
+    border-block: var(--hairline);
+  }
+
+  div {
+    display: grid;
+    gap: 2px;
+  }
+
+  dt {
+    color: var(--fg-muted);
+    font-size: 0.625rem;
+  }
+
+  dd {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 1rem + 1.2vw, 2rem);
+    font-variation-settings: 'opsz' 48;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  &__swatch {
+    width: 0.8em;
+    height: 0.8em;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+  }
+}
+
+// ---------- Chart ----------
+.chart {
+  grid-area: chart;
+
+  svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  text {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    fill: var(--fg-muted);
+    letter-spacing: 0.04em;
+  }
+
+  &__bands rect {
+    fill: rgb(239 229 211 / 0.02);
+
+    &.is-odd {
+      fill: rgb(239 229 211 / 0.05);
+    }
+  }
+
+  &__grid line {
+    stroke: var(--line);
+    stroke-dasharray: 2 4;
+  }
+
+  &__crack {
+    line {
+      stroke: var(--accent);
+      stroke-dasharray: 3 3;
+      opacity: 0.7;
+    }
+
+    text {
+      fill: var(--accent);
+    }
+  }
+
+  &__ghost {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 1.5;
+  }
+
+  &__line {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &__marker {
+    circle {
+      fill: var(--fg);
+    }
+
+    .chart__marker-glow {
+      fill: var(--accent);
+      opacity: 0.25;
+    }
+
+    text {
+      fill: var(--fg);
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }
+}

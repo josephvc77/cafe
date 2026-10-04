@@ -1,0 +1,54 @@
+<section class="hero" id="top" aria-labelledby="hero-title" #root>
+  <div class="hero__grid container">
+    <div class="hero__copy">
+      <p class="hero__kicker kicker">Small-batch roasters · {{ brand.city.split(',')[0] }}</p>
+
+      <h1 class="hero__title display h-hero" id="hero-title" kilnSplitWords>
+        Roasted Tuesday. <em>In your cup</em> by&nbsp;Thursday.
+      </h1>
+
+      <p class="hero__lead lead">
+        We roast once a week, only what’s been ordered, and ship it the same afternoon. No warehouse,
+        no shelf — just coffee at its best, with the roast date and the farm printed on every bag.
+      </p>
+
+      <div class="hero__actions">
+        <a class="btn" [href]="brand.primaryCta.href" kilnMagnetic>
+          {{ brand.primaryCta.label }}
+          <span class="btn__arrow"><kiln-icon name="arrow-right" /></span>
+        </a>
+        <a class="btn--link" href="#coffees">See this week’s coffees</a>
+      </div>
+    </div>
+
+    <div class="hero__visual">
+      <div class="hero__visual-inner">
+        <kiln-roast-bean class="hero__bean" label="A single coffee bean roasting from green to medium brown" />
+        <p class="hero__readout mono" aria-hidden="true">
+          <span class="hero__readout-dot"></span><span #readout>Drying · 00:00 · 200 °C</span>
+        </p>
+      </div>
+
+      <aside class="hero__ticket ticket" aria-label="Next roast">
+        <div class="ticket-row mono">
+          <span>Roast ticket</span><span>Batch {{ ticket.batch }}</span>
+        </div>
+        <p class="ticket-date">
+          <span class="mono">Next roast</span>
+          <strong>{{ ticket.roast }}</strong>
+        </p>
+        <div class="ticket__tear"></div>
+        <dl class="ticket-lines">
+          <div class="leader"><dt>Order by</dt><dd>{{ ticket.cutoff }}</dd></div>
+          <div class="leader"><dt>At your door</dt><dd>{{ ticket.delivery }}</dd></div>
+        </dl>
+        <p class="ticket-count mono">Closes in {{ ticket.countdown }}</p>
+      </aside>
+    </div>
+  </div>
+
+  <a class="hero__scroll mono" href="#roast">
+    <span>How we roast</span>
+    <kiln-icon name="arrow-down" [size]="16" />
+  </a>
+</section>

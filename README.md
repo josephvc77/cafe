@@ -1,27 +1,51 @@
-# Frontend
+# Kiln Coffee Roasters — premium Angular storefront
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.16.
+A single-page subscription storefront for a small-batch roaster, built as a reusable
+commercial foundation. Creative direction: [`docs/CREATIVE_BRIEF.md`](docs/CREATIVE_BRIEF.md).
 
-## Development server
+```bash
+npm install
+npm start        # http://localhost:4200
+npm run build    # production build → dist/frontend
+```
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Angular 16 (standalone components + signals) · SCSS tokens · GSAP + ScrollTrigger · Three.js (lazy).
 
-## Code scaffolding
+## Re-skinning for another client
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+| Change | Where |
+|---|---|
+| Name, address, hours, roast schedule, nav, CTA | `src/app/core/config/brand.config.ts` |
+| Products | `src/app/core/data/coffees.data.ts` |
+| Editorial copy, FAQ, testimonials, sourcing ledger | `src/app/core/data/content.data.ts` |
+| Colours, type, spacing, motion, frost | `src/styles/_tokens.scss` (raw palette → semantic tokens) |
+| Pricing & bag-sizing logic | `src/app/core/state/subscription.store.ts` |
+| Checkout / CRM integration | `src/app/core/services/order.service.ts` (demo stub) |
+| Section order | `src/app/app.component.ts` |
 
-## Build
+All business facts in the demo are placeholders.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Architecture
 
-## Running unit tests
+```
+src/app/
+  core/        config · data · state (signals) · services (motion, device, order) · utils
+  components/
+    navigation/  header + mobile sheet, mobile sticky CTA
+    hero/        hero composition + intro timeline
+    sections/    proof strip, roast story, line-up, ledger, voices, café, FAQ, final CTA
+    forms/       subscription builder + roast-ticket summary/checkout
+    three/       BeanScene (framework-free) + RoastBeanComponent (lifecycle, fallback)
+    motion/      kilnReveal, kilnSplitWords, kilnMagnetic directives
+    ui/          coffee bag SVG, icons
+src/styles/    tokens · base · type · materials (paper, ticket, frost, night) · buttons · mq
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Motion & performance rules
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- All GSAP work runs outside Angular's zone; scroll-driven values are written to the DOM
+  directly, never through change detection.
+- `prefers-reduced-motion`: no scrubbing or reveals, curve fully drawn, bean static.
+- Three.js is a separate lazy chunk, loaded only when the bean nears the viewport, paused
+  off-screen, disposed on destroy. An SVG bean in the same roast colour shows first and
+  remains the fallback for no-WebGL / Save-Data.

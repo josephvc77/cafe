@@ -1,0 +1,89 @@
+<section class="roast night" id="roast" aria-labelledby="roast-title" #root>
+  <div class="container">
+    <header class="roast__head">
+      <p class="kicker">No. 01 — The roast</p>
+      <h2 class="display h-section" id="roast-title" kilnSplitWords kilnReveal="words">
+        Eleven minutes decide <em>everything</em> in your&nbsp;cup.
+      </h2>
+      <p class="lead" kilnReveal revealDelay="0.2">
+        Green coffee tastes of grass and cardboard. Roasting builds everything else — sweetness,
+        acidity, body — and it starts fading within weeks. So we roast it for you, not for a shelf.
+      </p>
+    </header>
+
+    <div class="roast__body">
+      <!-- Sticky visual: bean + live roast chart -->
+      <div class="roast__visual">
+        <div class="roast__visual-sticky">
+          <kiln-roast-bean class="roast__bean" [animate]="true" label="A coffee bean changing colour as the roast progresses" />
+
+          <dl class="readout" aria-hidden="true">
+            <div><dt class="mono">Time</dt><dd #time class="tabular">00:00</dd></div>
+            <div><dt class="mono">Bean temp</dt><dd #temp class="tabular">200 °C</dd></div>
+            <div>
+              <dt class="mono">Colour</dt>
+              <dd><span class="readout__swatch" #swatch></span><span #shade>Green</span></dd>
+            </div>
+          </dl>
+
+          <figure class="chart">
+            <svg [attr.viewBox]="'-44 -16 ' + (w + 64) + ' ' + (h + 48)" role="img"
+              aria-labelledby="chart-title chart-desc">
+              <title id="chart-title">Roast profile</title>
+              <desc id="chart-desc">
+                Bean temperature over about eleven minutes: it dips to 94 °C as green coffee absorbs heat,
+                climbs through drying and browning, reaches first crack at 196 °C around 8 minutes 40,
+                and is dropped at 205 °C.
+              </desc>
+
+              <g class="chart__bands">
+                <rect *ngFor="let b of bands; let odd = odd" [attr.x]="b.x" y="0" [attr.width]="b.w" [attr.height]="h"
+                  [class.is-odd]="odd" />
+              </g>
+
+              <g class="chart__grid">
+                <g *ngFor="let t of temps">
+                  <line x1="0" [attr.x2]="w" [attr.y1]="t.y" [attr.y2]="t.y" />
+                  <text x="-12" [attr.y]="t.y + 4" text-anchor="end">{{ t.label }}°</text>
+                </g>
+                <g *ngFor="let m of minutes">
+                  <text [attr.x]="m.x" [attr.y]="h + 24" text-anchor="middle">{{ m.label }}′</text>
+                </g>
+              </g>
+
+              <g class="chart__crack">
+                <line [attr.x1]="crackX" [attr.x2]="crackX" y1="0" [attr.y2]="h" />
+                <text [attr.x]="crackX - 8" y="12" text-anchor="end">1st crack</text>
+              </g>
+
+              <path class="chart__ghost" [attr.d]="path" />
+              <path class="chart__line" [attr.d]="path" #curve />
+
+              <g #marker class="chart__marker">
+                <circle r="14" class="chart__marker-glow" />
+                <circle r="5" />
+                <text #markerLabel x="12" y="-12">200 °C</text>
+              </g>
+            </svg>
+          </figure>
+        </div>
+      </div>
+
+      <!-- Steps: scrolling text that drives the visual -->
+      <ol role="list" class="roast__steps" #steps>
+        <li *ngFor="let s of stages; let i = index" class="step">
+          <p class="step__meta mono">
+            <span>0{{ i + 1 }}</span><span>{{ s.time }}</span><span>{{ s.temp }}</span>
+          </p>
+          <h3 class="step__title h-sub">{{ s.title }}</h3>
+          <p class="step__body">{{ s.body }}</p>
+        </li>
+      </ol>
+    </div>
+
+    <p class="roast__outro" kilnReveal>
+      <span class="display">That’s why nothing here is roasted “for stock”.</span>
+      <a class="btn" href="#subscribe">Get on Tuesday’s roast</a>
+    </p>
+  </div>
+</section>

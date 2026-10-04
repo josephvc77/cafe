@@ -1,0 +1,88 @@
+<section class="lineup section" id="coffees" aria-labelledby="lineup-title">
+  <div class="container">
+    <header class="lineup__head">
+      <p class="kicker">No. 02 — On the roaster</p>
+      <h2 class="display h-section" id="lineup-title" kilnSplitWords kilnReveal="words">
+        This week’s <em>four</em>.
+      </h2>
+      <p class="lead" kilnReveal revealDelay="0.15">
+        Roasting {{ roastDate }}. Each lot is from a farm we buy from directly, and changes with the
+        harvest calendar — so this list is never the same for long.
+      </p>
+    </header>
+
+    <div class="lineup__body">
+      <!-- Desktop stage: the active bag -->
+      <div class="lineup__stage" aria-hidden="true">
+        <div class="lineup__stage-sticky">
+          <kiln-coffee-bag
+            *ngFor="let c of coffees"
+            [coffee]="c"
+            class="lineup__stage-bag"
+            [class.is-active]="active() === c.id"
+          />
+          <p class="lineup__stage-caption mono">
+            <ng-container *ngFor="let c of coffees">
+              <span [class.is-active]="active() === c.id">Lot {{ c.lot }} · {{ c.altitude }}</span>
+            </ng-container>
+          </p>
+        </div>
+      </div>
+
+      <ol role="list" class="lineup__list">
+        <li
+          *ngFor="let c of coffees; let i = index"
+          class="coffee"
+          [class.is-active]="active() === c.id"
+          (pointerenter)="active.set(c.id)"
+          (focusin)="active.set(c.id)"
+          kilnReveal
+        >
+          <kiln-coffee-bag [coffee]="c" class="coffee__thumb" aria-hidden="true" />
+
+          <div class="coffee__main">
+            <p class="coffee__meta mono">
+              <span class="coffee__index">0{{ i + 1 }}</span>
+              {{ c.origin }} · {{ c.region }}
+            </p>
+            <h3 class="coffee__name">{{ c.name }}</h3>
+            <p class="coffee__notes">{{ c.notes.join(' · ') }}</p>
+            <p class="coffee__detail">
+              {{ c.process }} · {{ c.producer }} · best for {{ c.bestFor.toLowerCase() }}
+            </p>
+          </div>
+
+          <div class="coffee__side">
+            <div class="roast-meter" [attr.aria-label]="'Roast: ' + c.roast" role="img">
+              <span class="mono">Roast</span>
+              <span class="roast-meter__track"><span class="roast-meter__fill" [style.width]="roastWidth(c.roastLevel)"></span></span>
+              <span class="mono roast-meter__label">{{ c.roast }}</span>
+            </div>
+            <p class="coffee__price">
+              {{ c.price | currency: 'USD' : 'symbol' : '1.0-0' }}<span class="mono"> / 250 g</span>
+            </p>
+            <button type="button" class="btn btn--ghost coffee__cta" (click)="choose(c.id)">
+              Choose {{ c.name }}
+              <span class="btn__arrow"><kiln-icon name="arrow-right" /></span>
+            </button>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <aside class="rotation" kilnReveal>
+      <p class="rotation__stamp mono" aria-hidden="true">Most<br />picked</p>
+      <div>
+        <h3 class="h-sub">Can’t choose? Let us.</h3>
+        <p>
+          <strong>Roaster’s rotation</strong> sends whichever coffee we’re most excited about each roast,
+          matched to how you brew. $20 a bag, and the easiest way to taste the whole line-up.
+        </p>
+      </div>
+      <button type="button" class="btn btn--ink" (click)="choose(rotationId)">
+        Choose the rotation
+        <span class="btn__arrow"><kiln-icon name="arrow-right" /></span>
+      </button>
+    </aside>
+  </div>
+</section>
